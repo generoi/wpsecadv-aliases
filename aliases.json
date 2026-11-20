@@ -1,4 +1,6 @@
 {
+  "generoi/custom-facebook-feed-pro": "wp-plugin/custom-facebook-feed",
+  "generoi/enhanced-media-library-pro": "wp-plugin/enhanced-media-library",
   "generoi/polylang-pro": "wp-plugin/polylang",
   "generoi/wpdev-booking": "wp-plugin/booking"
 }

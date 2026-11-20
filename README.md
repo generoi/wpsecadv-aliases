@@ -58,6 +58,15 @@ Current aliases and why each is safe:
 - `generoi/wpdev-booking` → `wp-plugin/booking`: Booking Calendar Business is
   the free plugin's code; its `WP_BK_VERSION_NUM` follows the wordpress.org
   releases (10.10.2 on both).
+- `generoi/enhanced-media-library-pro` → `wp-plugin/enhanced-media-library`:
+  PRO is the free plugin's tree at the same `EML_VERSION` plus a `pro/`
+  directory; everything outside `pro/` is byte-identical (checked at 2.8.8).
+- `generoi/custom-facebook-feed-pro` → `wp-plugin/custom-facebook-feed`: the
+  weakest of these. Pro has its own codebase at the free plugin's version
+  numbers (`CFFVER`), with extra releases of its own. Smash Balloon ports
+  security fixes to both at the same version (CVE-2026-125033: vulnerable in
+  both at 4.15.1, fixed in both at 4.16.0), so free ranges have held so far,
+  but a Pro release missing from wordpress.org can fall outside them.
 
 An alias makes the nightly scan see advisories it couldn't before, so expect
 the affected sites' next scan to go red.
