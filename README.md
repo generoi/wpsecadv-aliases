@@ -12,9 +12,29 @@ them to our package name.
 Published at https://generoi.github.io/wpsecadv-aliases/, rebuilt twice a
 day (after wpsecadv syncs) and on every push.
 
+## When it applies
+
+Check whenever a site requires a premium plugin through our own mirror
+(`generoi/<plugin>-pro`, `generoi/<plugin>-premium`, a renamed plugin
+directory) instead of a `wp-plugin/*` package:
+
+1. Ask wpsecadv for it:
+   `curl -s -o /dev/null -w '%{http_code}' https://repo-wpsecadv.typist.tech/p2/generoi/<package>.json`.
+   A 200 means Wordfence tracks the slug itself and nothing is needed here.
+2. On a 404, find the free plugin it's built on and check whether it ships
+   that code at the same version numbers (see "Adding an alias"). If it does,
+   alias it. If the versions differ, an alias would match the wrong ranges:
+   leave it out.
+3. Make sure the mirror is locked to a **tagged version**. A site that
+   requires `dev-master` locks no version, and no advisory range can ever
+   match it, aliased or not. Tag the mirror at its plugin version and change
+   the constraint to `^<major>.<minor>`.
+
 ## Use
 
-Add it next to wpsecadv:
+The shared `vulnerability-scan.yml` in `generoi/github-actions` already adds
+this repository for every nightly scan. To run the same audit by hand, add it
+next to wpsecadv:
 
 ```sh
 composer config -g repositories.wpsecadv-aliases composer https://generoi.github.io/wpsecadv-aliases --no-interaction
@@ -28,10 +48,19 @@ Composer asks this repository about nothing else.
 Add `"<our package>": "<wpsecadv package>"` to `aliases.json`.
 
 Only alias when the premium plugin ships the free plugin's code at the same
-version numbers, so the free plugin's affected ranges apply as is. For
-Polylang Pro, `polylang.php` loads the bundled `wpsyntex/polylang` and both
-report the same version. Issues in premium-only code are not covered by any
-alias.
+version numbers, so the free plugin's affected ranges apply as is. Issues in
+premium-only code are not covered by any alias.
+
+Current aliases and why each is safe:
+
+- `generoi/polylang-pro` → `wp-plugin/polylang`: `polylang.php` loads the
+  bundled `wpsyntex/polylang`, and both report the same version.
+- `generoi/wpdev-booking` → `wp-plugin/booking`: Booking Calendar Business is
+  the free plugin's code; its `WP_BK_VERSION_NUM` follows the wordpress.org
+  releases (10.10.2 on both).
+
+An alias makes the nightly scan see advisories it couldn't before, so expect
+the affected sites' next scan to go red.
 
 ## Build locally
 
