@@ -1,3 +1,4 @@
 {
-  "generoi/polylang-pro": "wp-plugin/polylang"
+  "generoi/polylang-pro": "wp-plugin/polylang",
+  "generoi/wpdev-booking": "wp-plugin/booking"
 }
